@@ -22,7 +22,7 @@ const Login: React.FC = () => {
   }
 
   return (
-<div>
+<form>
         <div>
       <label>
         Username : 
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
       <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
       </div>
       <button onClick={handleLogin}>Login</button>
-      </div>
+      </form>
   );
 };
 
