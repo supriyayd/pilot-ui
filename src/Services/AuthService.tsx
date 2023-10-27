@@ -16,10 +16,10 @@ const AuthService = () => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    window.location.href = '/login';
-  };
+  // const logout = () => {
+  //   console.log("here");
+    
+  // };
 
   const getCurrentUser = () => {
     const userStr = localStorage.getItem('user');
@@ -29,7 +29,7 @@ const AuthService = () => {
 
   return {
     login,
-    logout,
+    // logout,
     getCurrentUser,
   };
 };
