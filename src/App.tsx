@@ -1,12 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter,Route, Routes } from 'react-router-dom';
+import { BrowserRouter,Navigate,Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
 import Menubar from './Components/Menubar';
 import Dashboard from './Components/Dashboard';
 import Operatoins from './Components/Operatoins';
 import Analytics from './Components/Analytics';
+
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
         <Route path="/dashboard/operatoins" Component={Operatoins} />
         <Route path="/dashboard/analytics" Component={Analytics} />
         <Route path="/login" Component={Login} />
+        <Route path="/" element={<Navigate replace to="/login" />} />
       </Routes>
     </div>
   );
