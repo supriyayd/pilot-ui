@@ -12,11 +12,13 @@ const Login: React.FC = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   
-  const handleLogin = async () => {
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
     try {
       const response = await authService.login(username, password);
-      if (response.accessToken) {
+      if (response.authToken) {
         navigate("/Dashboard");
+        setMessage('');
       } else {
         setMessage('Login failed. Please check your credentials.');
       }
@@ -27,20 +29,21 @@ const Login: React.FC = () => {
   }
 
   return (
-<form>
+<form onSubmit={handleLogin}>
         <div>
       <label>
         Username : 
       </label>
-      <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
+      <input type="text" value={username} required onChange={(event) => setUsername(event.target.value)} />
       </div>
       <div>
       <label>
         Password : 
       </label>
-      <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+      <input type="password" value={password} required onChange={(event) => setPassword(event.target.value)} />
       </div>
-      <button onClick={handleLogin}>Login</button>
+      <button>Login</button>
+      <span>{message}</span>
       </form>
   );
 };

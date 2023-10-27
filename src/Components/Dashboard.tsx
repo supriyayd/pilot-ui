@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Menubar from './Menubar';
 import Header from './Header';
-import MenuItemRoutes, { Main } from './Main';
+import { Main } from './Main';
+import '../CSS/dashboard.css';
 
 const Dashboard: React.FC = () => {
  
@@ -22,10 +23,13 @@ const Dashboard: React.FC = () => {
 
       <><div>
           <Header />
-      </div><div>
-              <Menubar />
-              <Main/>
-          </div></>
+      </div>
+      <div className="container">
+      <div className="left-component"><Menubar /></div> 
+  <div className="right-component"><Main/></div> 
+  </div>
+              
+          </>
  
   );
 };

@@ -22,10 +22,10 @@ const Menubar: React.FC = () => {
       <div id="Menu">
         <Sidebar>
             <Menu>
-              <MenuItem active={true} icon={<FiHome />} component={<Link to="/Operatoins" />}>
+              <MenuItem active={true} icon={<FiHome />} component={<Link to="/dashboard/operatoins" />}>
                 Operatoins
               </MenuItem>
-              <MenuItem icon={<IoMdAnalytics/>} component={<Link to="/Analytics" />}>Analytics</MenuItem>
+              <MenuItem icon={<IoMdAnalytics/>} component={<Link to="/dashboard/analytics" />}>Analytics</MenuItem>
             </Menu>
         </Sidebar>
       </div>
