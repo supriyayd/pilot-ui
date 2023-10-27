@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import AuthService from '../Services/AuthService';
+import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import { useNavigate  } from 'react-router-dom';
 
 const Login: React.FC = () => {
     const authService = AuthService();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
   
   const handleLogin = async () => {
     try {
       const response = await authService.login(username, password);
       if (response.accessToken) {
-        // Login successful, perform your desired actions here.
+        navigate("/Dashboard");
       } else {
         setMessage('Login failed. Please check your credentials.');
       }

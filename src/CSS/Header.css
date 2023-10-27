@@ -1,0 +1,22 @@
+.title {
+    display: block;
+    /* border-top: 5px solid #9ea4f5; */
+     /* background-color: #7c807c;  */
+    height: 30px;
+    line-height: 30px;
+    /* padding: 4px 6px; */
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 13px;
+    clear: both;
+    margin-right:30px;
+    margin-left:30px;
+
+  }    
+  .title .name {
+    float: left;
+  }      
+  .title .logout {
+    float: right;
+
+  }
