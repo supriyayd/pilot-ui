@@ -6,7 +6,7 @@ import Login from './Components/Login';
 import Menubar from './Components/Menubar';
 import Dashboard from './Components/Dashboard';
 import Operatoins from './Components/Operatoins';
-import Analytics from './Components/Analytics';
+import Analytics from './Components/Analytics/Analytics';
 
 
 const App: React.FC = () => {
