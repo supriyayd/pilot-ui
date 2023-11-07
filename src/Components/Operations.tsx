@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-const Operatoins: React.FC = () => {
+const Operations: React.FC = () => {
    return (
     <div>
       <h1><span>Operatoins</span></h1>
@@ -10,4 +10,4 @@ const Operatoins: React.FC = () => {
   );
 };
 
-export default Operatoins;
+export default Operations;

@@ -3,32 +3,32 @@ import Menubar from "./Menubar";
 import Header from "./Header";
 import { Main } from "./Main";
 import "../CSS/dashboard.css";
+import { pageTypes } from "../types";
+import Operations from "./Operations";
+import Analytics from "./Analytics/Analytics";
 
 const Dashboard: React.FC = () => {
-  const styles = {
-    contentDiv: {
-      display: "flex",
-    },
-    contentMargin: {
-      marginLeft: "10px",
-      width: "100%",
-    },
-  };
+  const [currentComponent, setCurrentComponent] = useState(
+    pageTypes.OPERATIONS
+  );
+
+
 
   return (
-    <>
+    <div className="h-screen">
       <div>
         <Header />
       </div>
-      <div className="container">
+      <div className="container h-full">
         <div className="left-component">
-          <Menubar />
+          <Menubar setCurrentComponent={setCurrentComponent} />
         </div>
         <div className="right-component">
-          <Main />
+          {currentComponent === pageTypes.OPERATIONS && <Operations />}
+          {currentComponent === pageTypes.ANALYTICS && <Analytics />}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
