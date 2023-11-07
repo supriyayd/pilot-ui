@@ -5,7 +5,7 @@ import { BrowserRouter,Navigate,Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
 import Menubar from './Components/Menubar';
 import Dashboard from './Components/Dashboard';
-import Operatoins from './Components/Operatoins';
+import Operatoins from './Components/Operation/Operatoins';
 import Analytics from './Components/Analytics';
 
 
