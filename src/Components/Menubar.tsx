@@ -5,16 +5,10 @@ import { FiHome } from "react-icons/fi";
 import { pageTypes } from "../types";
 
 const Menubar = ({ setCurrentComponent }: any) => {
-  const [menuCollapse, setMenuCollapse] = useState<boolean>(false);
-
-  const menuIconClick = (): void => {
-    setMenuCollapse((prevMenuCollapse) => !prevMenuCollapse);
-  };
-
   return (
-    <>
-      <div id="Menu h-screen">
-        <Sidebar>
+    <div>
+      <div id="Menu">
+        <Sidebar className="h-full">
           <Menu>
             <MenuItem
               active={true}
@@ -32,7 +26,7 @@ const Menubar = ({ setCurrentComponent }: any) => {
           </Menu>
         </Sidebar>
       </div>
-    </>
+    </div>
   );
 };
 

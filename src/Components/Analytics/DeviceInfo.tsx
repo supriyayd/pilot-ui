@@ -17,6 +17,15 @@ function DeviceInfo() {
             />
           </div>
           <div className="info-container flex-column p-2">
+            <p>
+              <strong className="text-cyan-500 p-2">Device ID:</strong> {"1"}
+            </p>
+            <p>
+              <strong className="text-cyan-500 p-2">
+                Device Serial Number:
+              </strong>{" "}
+              {"XUQE625WBS617"}
+            </p>
             <p className="">
               <strong className="text-cyan-500 p-2">Device Name:</strong>{" "}
               {"Polyjet 500"}
@@ -30,10 +39,8 @@ function DeviceInfo() {
               {"Sample User"}
             </p>
             <p>
-              <strong className="text-cyan-500 p-2">
-                Device Temperature:{" "}
-              </strong>
-              {10} Degree Celsius
+              <strong className="text-cyan-500 p-2">Device Temperature:</strong>
+              {10} Degrees
             </p>
             <p>
               <strong className="text-cyan-500 p-2">

@@ -1,6 +1,6 @@
 const GetAllNetwork_QUERY = `
 {
-  getAllNetwork() {
+  getAllNetworks() {
       user_id
   }
 }`;

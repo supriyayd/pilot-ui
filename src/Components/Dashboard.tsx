@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menubar from "./Menubar";
 import Header from "./Header";
-import { Main } from "./Main";
 import "../CSS/dashboard.css";
 import { pageTypes } from "../types";
 import Operations from "./Operations";
@@ -12,15 +11,18 @@ const Dashboard: React.FC = () => {
     pageTypes.OPERATIONS
   );
 
+  const [networks, setNetworks] = useState<Array<any>>([]);
 
+  useEffect(() => {
+  }, [currentComponent]);
 
   return (
     <div className="h-screen">
       <div>
         <Header />
       </div>
-      <div className="container h-full">
-        <div className="left-component">
+      <div className="container">
+        <div className="left-component h-full">
           <Menubar setCurrentComponent={setCurrentComponent} />
         </div>
         <div className="right-component">
