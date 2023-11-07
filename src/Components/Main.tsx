@@ -1,12 +1,15 @@
 import React from "react";
-import Operatoins from "./Operation/Operatoins";
-
+import Operations from "./Operations";
+import Analytics from "./Analytics/Analytics";
 
 
 export const Main: React.FC = () => {
-    return (
-        <Operatoins/>
+  return (
+    <>
+      <Operations />
+      <Analytics />
+    </>
   );
-}
+};
 
 export default Main;
