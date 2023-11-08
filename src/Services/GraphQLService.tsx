@@ -13,20 +13,7 @@ import {
 const DeviceService = () => {
   const GetAllNetworks = async (user_id: number) => {
     try {
-      const { data, isLoading, error } = useQuery("getAllNetworks", () => {
-        return axios({
-          url: process.env.REACT_APP_API_URL,
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          data: { query: GetAllNetwork_QUERY },
-        }).then((response) => {
-          if (response.status >= 400) {
-            throw new Error("Error fetching data");
-          } else {
-            return response.data.json();
-          }
-        });
-      });
+      
     } catch (error) {}
   };
 
