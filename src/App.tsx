@@ -4,7 +4,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
 import Analytics from "./Components/Analytics/Analytics";
-import Operations from "./Components/Operations";
 
 
 const App: React.FC = () => {
