@@ -1,65 +1,38 @@
 import Select from "react-select";
 import { dropDownStyles } from "../../common";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { GetJobData_QUERY } from "../../Services/Queries";
+import { useState } from "react";
 
-function JobsInfo() {
-  const dummyData = [
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-    {
-      device_id: 1,
-      network_id: 101,
-      status: "IDLE",
-      temperature: 25,
-      humidity: 25,
-    },
-  ];
+function JobsInfo({ deviceId }: any) {
+  const [jobs, setJobs] = useState([]);
+
+  const { data, isLoading, error } = useQuery("getJobData", () => {
+    return axios({
+      url: process.env.REACT_APP_API_URL,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("authToken"),
+      },
+      data: {
+        query: GetJobData_QUERY({
+          filterObject: {
+            device_id: deviceId,
+          },
+        }),
+      },
+    }).then((response) => {
+      if (response.status >= 400) {
+        throw new Error("Error fetching data");
+      } else {
+        const jobsList = response.data.data.getJobData;
+        setJobs(jobsList);
+      }
+    });
+  });
+
   return (
     <div className="jobs-info-container flex-1 border-2 rounded-md h-full border-sky-500 bg-slate-50 w-full ml-2 p-4">
       <div className="device-card-heading flex justify-between">
@@ -72,21 +45,24 @@ function JobsInfo() {
       </div>
       <div className="table-container mt-2 bg-white border-2 border-slate-200 rounded-md h-1/6 px-4 py-2 bg-slate-100">
         <ul className="flex justify-between">
-          <li className="">Device ID</li>
-          <li>Network ID</li>
+          <li className="">Job ID</li>
+          <li>Device ID</li>
           <li>Status</li>
-          <li>Temperature</li>
-          <li>Humidity</li>
+          <li>Start Date</li>
+          <li>User ID</li>
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
-        {dummyData.map((log: any) => (
-          <ul className="flex justify-between border-b-2 border-slate-100 p-2">
-            <li>{log.device_id}</li>
-            <li>{log.network_id}</li>
-            <li>{log.status}</li>
-            <li>{log.temperature}</li>
-            <li>{log.humidity}</li>
+        {jobs.map((job: any, index: number) => (
+          <ul
+            key={index}
+            className="flex justify-between border-b-2 border-slate-100 p-2"
+          >
+            <li>{job.job_id}</li>
+            <li>{job.device_id}</li>
+            <li>{job.status}</li>
+            <li>{new Date(job.start_date).toString()}</li>
+            <li>{job.user_id}</li>
           </ul>
         ))}
       </div>

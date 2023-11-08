@@ -1,32 +1,47 @@
-const GetAllNetwork_QUERY = `
+const GetAllNetwork_QUERY = (filterObject: any) => `
 {
-  getAllNetworks() {
-      user_id
-  }
-}`;
-
-const GetAllDevice_QUERY = `
-{
-  getAllDevices() {
+  getAllNetworks(filterObject: ${filterObject}) {
       network_id
+      name
   }
 }`;
 
-const GetDeviceData_QUERY = `
+const GetAllDevice_QUERY = (filterObject: any) => `
 {
-  getDeviceData() {
+  getAllDevices(filterObject: ${filterObject}) {
+    device_id
+    material_id
+    network_id
+    name
+    serial_number
+    uuid
+    status
+    created_at
+    temperature
+    manufacturer
+    available_material
+    humidity
+    printing_time
+  }
+}`;
+
+const GetDeviceData_QUERY = (filterObject: any) => `
+{
+  getDeviceData(filterObject: ${filterObject}) {
       network_id,
       device_id
   }
 }`;
 
-const GetJobData_QUERY = `
+const GetJobData_QUERY = (filterObject: any) => `
 {
-    getJobData()
+    getJobData(filterObject: ${filterObject})
     {
-        job_id,
-        device_id, 
+        job_id
+        device_id
         status
+        start_date
+        user_id
     }
 }`;
 
