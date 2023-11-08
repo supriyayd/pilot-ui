@@ -1,4 +1,5 @@
-function DeviceInfo() {
+function DeviceInfo({ deviceInfo }: any) {
+  console.log(deviceInfo);
   return (
     <div className="device-info-container flex-1 border-sky-500 border-2 bg-slate-50 rounded-md h-full w-full p-4">
       <div className="device-card-heading">
@@ -18,29 +19,34 @@ function DeviceInfo() {
           </div>
           <div className="info-container flex-column p-2">
             <p>
-              <strong className="text-cyan-500 p-2">Device ID:</strong> {"1"}
+              <strong className="text-cyan-500 p-2">Device ID:</strong>{" "}
+              {deviceInfo?.device_id}
             </p>
             <p>
               <strong className="text-cyan-500 p-2">
                 Device Serial Number:
               </strong>{" "}
-              {"XUQE625WBS617"}
+              {deviceInfo?.serial_number}
             </p>
             <p className="">
               <strong className="text-cyan-500 p-2">Device Name:</strong>{" "}
-              {"Polyjet 500"}
+              {deviceInfo?.name}
             </p>
             <p className="text-yellow-500">
               <strong className="text-cyan-500 p-2">Device Status: </strong>
-              <strong>IDLE</strong>
+              <strong>{deviceInfo?.status}</strong>
             </p>
             <p>
               <strong className="text-cyan-500 p-2">Device User: </strong>
-              {"Sample User"}
+              {"1"}
             </p>
             <p>
               <strong className="text-cyan-500 p-2">Device Temperature:</strong>
-              {10} Degrees
+              {deviceInfo?.temperature} Degrees
+            </p>
+            <p>
+              <strong className="text-cyan-500 p-2">Device Humidity:</strong>
+              {deviceInfo?.humidity} %
             </p>
             <p>
               <strong className="text-cyan-500 p-2">

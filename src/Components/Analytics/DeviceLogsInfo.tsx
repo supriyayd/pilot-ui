@@ -74,8 +74,8 @@ function DeviceLogsInfo() {
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
-        {dummyData.map((log: any) => (
-          <ul className="flex justify-between border-b-2 border-slate-100 p-2">
+        {dummyData.map((log: any, index: number) => (
+          <ul key={index} className="flex justify-between border-b-2 border-slate-100 p-2">
             <li>{log.device_id}</li>
             <li>{log.network_id}</li>
             <li className={`text-${statusColor[log.status]}-200 font-medium`}>{log.status}</li>
