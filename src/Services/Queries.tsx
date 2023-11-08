@@ -1,6 +1,6 @@
 const GetAllNetwork_QUERY = `
 {
-  getAllNetwork() {
+  getAllNetworks() {
       user_id
   }
 }`;
@@ -20,7 +20,7 @@ const GetDeviceData_QUERY = `
   }
 }`;
 
-const GetJobData_QUERY=`
+const GetJobData_QUERY = `
 {
     getJobData()
     {
@@ -30,7 +30,7 @@ const GetJobData_QUERY=`
     }
 }`;
 
-const GetJobLogData_QUERY=`
+const GetJobLogData_QUERY = `
 {
     getJobLogData()
     {
@@ -40,7 +40,7 @@ const GetJobLogData_QUERY=`
     }
 }`;
 
-const CreateJob_Query=`{
+const CreateJob_Query = `{
     createJob()
     {
         user_id,
@@ -50,12 +50,22 @@ const CreateJob_Query=`{
         status,
         filePath
     }
-}`; 
+}`;
 
-const updateJobStatus_Query=`{
+const updateJobStatus_Query = `{
     UpdateJobStatus()
     {
         job_id,
         status
     }
-}`
+}`;
+
+export {
+  updateJobStatus_Query,
+  CreateJob_Query,
+  GetAllDevice_QUERY,
+  GetAllNetwork_QUERY,
+  GetDeviceData_QUERY,
+  GetJobData_QUERY,
+  GetJobLogData_QUERY,
+};
