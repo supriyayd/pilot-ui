@@ -16,10 +16,14 @@ function Analytics({ networks }: any) {
   ) || [{ value: 1, label: "Network 1" }];
 
   const [selectedNetwork, setSelectedNetwork] = useState(null);
-  const [selectedDevice, setSelectedDevice] = useState(null);
+  const [selectedDevice, setSelectedDevice] = useState(0);
   const [devicesInfo, setDevicesInfo] = useState([]);
 
-  const { data, isLoading, error } = useQuery("getDeviceData", () => {
+  useEffect(() => {
+    refetch();
+  }, [selectedDevice])
+
+  const { data, isLoading, error, refetch } = useQuery("getDeviceData", () => {
     return axios({
       url: process.env.REACT_APP_API_URL,
       method: "POST",
@@ -33,8 +37,7 @@ function Analytics({ networks }: any) {
             network_id: selectedNetwork,
           },
         }),
-        // enabled: selectedNetwork === newt
-      },
+      }
     }).then((response) => {
       if (response.status >= 400) {
         throw new Error("Error fetching data");
@@ -43,7 +46,7 @@ function Analytics({ networks }: any) {
         return setDevicesInfo(devicesList);
       }
     });
-  });
+  }, {enabled: false});
 
   return (
     <div className="flex-column p-4  ml-8 bg-sky-50 rounded-sm m-4">
@@ -69,12 +72,16 @@ function Analytics({ networks }: any) {
         </div>
       </div>
       <div className="info-container flex h-80 p-4 rounded-md mt-2">
-        <DeviceInfo deviceInfo={selectedDevice}/>
-        <JobsInfo />
+        <DeviceInfo
+          deviceInfo={devicesInfo.filter(
+            (device: any) => device.device_id === selectedDevice
+          )[0]}
+        />
+        <JobsInfo deviceId={selectedDevice} />
       </div>
       <div className="logs-container flex h-80 p-4 rounded-md">
-        <DeviceLogsInfo />
-        <JobLogsInfo />
+        <DeviceLogsInfo deviceId={selectedDevice} />
+        <JobLogsInfo deviceId={selectedDevice} />
       </div>
     </div>
   );
