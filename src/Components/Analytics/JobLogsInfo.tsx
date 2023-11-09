@@ -1,17 +1,46 @@
 import Select from "react-select";
 import { dropDownStyles } from "../../common";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { GetJobLogData_QUERY } from "../../Services/Queries";
+import { useEffect, useState } from "react";
 
-function JobLogsInfo() {
-     const dummyData = [
-       {
-        log_id: 1,
-         device_id: 1,
-         user_id: 1,
-         start_date: "27-10-2023",
-         end_date: "28-10-2023",
-         incident_type: "ABORTED",
-       },
-     ];
+function JobLogsInfo({ deviceId }: any) {
+  const [joblogs, setJoblogs] = useState([]);
+
+  //  useEffect(() => {
+  //    refetch();
+  //  }, [deviceId]);
+
+  const { data, isLoading, error, refetch } = useQuery(
+    "getLogJobData",
+    () => {
+      return axios({
+        url: process.env.REACT_APP_API_URL,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("authToken"),
+        },
+        data: {
+          query: GetJobLogData_QUERY({
+            filterObject: {
+              device_id: deviceId,
+            },
+          }),
+        },
+      }).then((response) => {
+        if (response.status >= 400) {
+          throw new Error("Error fetching data");
+        } else {
+          const jobLogsList = response.data.data.getJoblogData;
+          setJoblogs(jobLogsList);
+        }
+      });
+    },
+    { enabled: false }
+  );
+
   return (
     <div className="job-logs-container flex-1 border-2 border-sky-500 bg-slate-50 rounded-md h-full w-full ml-2 p-4">
       <div className="device-card-heading flex justify-between">
@@ -33,16 +62,24 @@ function JobLogsInfo() {
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
-        {dummyData.map((log: any, index: number) => (
-          <ul key={index} className="flex justify-between border-b-2 border-slate-100 p-2">
-            <li>{log.log_id}</li>
-            <li>{log.device_id}</li>
-            <li>{log.user_id}</li>
-            <li>{log.start_date}</li>
-            <li>{log.end_date}</li>
-            <li>{log.incident_type}</li>
-          </ul>
-        ))}
+        {joblogs.length ? (
+          joblogs.map((log: any, index: number) => (
+            <ul
+              key={index}
+              className="flex justify-between border-b-2 border-slate-100 p-2"
+            >
+              <li>{log?.log_id}</li>
+              <li>{log?.job_id}</li>
+              <li>{log?.start_date}</li>
+              <li>{log?.end_date}</li>
+              <li>{log?.incident_type}</li>
+            </ul>
+          ))
+        ) : (
+          <div className="flex justify-center items-center font-semibold mt-16">
+            No Data to Display!
+          </div>
+        )}
       </div>
     </div>
   );
