@@ -16,7 +16,11 @@ const Dashboard: React.FC = () => {
 
   const [networks, setNetworks] = useState<Array<any>>([]);
 
-  const { data, isLoading, error } = useQuery("getAllNetworks", () => {
+  useEffect(() => {
+    refetch();
+  }, [])
+
+  const { data, isLoading, error, refetch } = useQuery("getAllNetworks", () => {
     return axios({
       url: process.env.REACT_APP_API_URL,
       method: "POST",
@@ -36,7 +40,7 @@ const Dashboard: React.FC = () => {
         return setNetworks(networksList)
       }
     });
-  });
+  }, {enabled: false});
 
   return (
     <div className="h-screen">

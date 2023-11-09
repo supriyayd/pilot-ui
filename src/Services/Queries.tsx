@@ -45,13 +45,15 @@ const GetJobData_QUERY = (filterObject: any) => `
     }
 }`;
 
-const GetJobLogData_QUERY = `
+const GetJobLogData_QUERY = (filterObject: any) => `
 {
-    getJobLogData()
+    getJoblogData(filterObject: ${filterObject})
     {
-        job_id,
-        incident_type, 
+        log_id
+        job_id
+        incident_type
         start_date
+        end_date
     }
 }`;
 
@@ -75,6 +77,17 @@ const updateJobStatus_Query = `{
     }
 }`;
 
+const GetDeviceLogs_Query = (filterObject: any) => `
+{
+  getDevicelogsData(filterObject: ${filterObject}) {
+    log_id
+    device_id
+    occurred_at
+    status
+    change_description
+  }
+}`;
+
 export {
   updateJobStatus_Query,
   CreateJob_Query,
@@ -83,4 +96,5 @@ export {
   GetDeviceData_QUERY,
   GetJobData_QUERY,
   GetJobLogData_QUERY,
+  GetDeviceLogs_Query,
 };
