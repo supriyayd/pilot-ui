@@ -18,7 +18,7 @@ function DeviceInfo({ deviceInfo }: any) {
                   height={"100%"}
                 />
               </div>
-              <div className="info-container flex-column p-2">
+              <div className="px-2">
                 <p>
                   <strong className="text-cyan-500 p-2">Device ID:</strong>{" "}
                   {deviceInfo?.device_id}
