@@ -23,12 +23,6 @@ function DeviceInfo({ deviceInfo }: any) {
                   <strong className="text-cyan-500 p-2">Device ID:</strong>{" "}
                   {deviceInfo?.device_id}
                 </p>
-                <p>
-                  <strong className="text-cyan-500 p-2">
-                    Device Serial Number:
-                  </strong>{" "}
-                  {deviceInfo?.serial_number}
-                </p>
                 <p className="">
                   <strong className="text-cyan-500 p-2">Device Name:</strong>{" "}
                   {deviceInfo?.name}
@@ -36,10 +30,6 @@ function DeviceInfo({ deviceInfo }: any) {
                 <p className="text-yellow-500">
                   <strong className="text-cyan-500 p-2">Device Status: </strong>
                   <strong>{deviceInfo?.status}</strong>
-                </p>
-                <p>
-                  <strong className="text-cyan-500 p-2">Device User: </strong>
-                  {"1"}
                 </p>
                 <p>
                   <strong className="text-cyan-500 p-2">

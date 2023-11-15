@@ -9,7 +9,7 @@ function JobsInfo({ deviceId }: any) {
   console.log(deviceId);
   const [jobs, setJobs] = useState([]);
   const [enableClear, setEnableClear] = useState(false);
-
+  const [defaultFilterValue, setDefaultFilterValue] = useState("");
   useEffect(() => {
     if (deviceId) refetch();
   }, [deviceId]);
@@ -48,6 +48,7 @@ function JobsInfo({ deviceId }: any) {
     const filteredJobs = jobs.filter((job: any) => job.job_id === jobId);
     setJobs(filteredJobs);
     setEnableClear(true);
+    setDefaultFilterValue(jobId);
   }
 
   return (
@@ -60,6 +61,7 @@ function JobsInfo({ deviceId }: any) {
           <Select
             styles={dropDownStyles}
             placeholder="Job ID"
+            defaultInputValue={defaultFilterValue}
             options={jobs?.map((job: any) => ({
               value: job.job_id,
               label: job.job_id,
@@ -71,6 +73,7 @@ function JobsInfo({ deviceId }: any) {
               className="ml-2 p-2 bg-red-500 rounded-md text-white"
               onClick={() => {
                 setEnableClear(false);
+                setDefaultFilterValue("");
                 refetch();
               }}
             >
@@ -81,11 +84,11 @@ function JobsInfo({ deviceId }: any) {
       </div>
       <div className="table-container mt-2 bg-white border-2 border-slate-200 rounded-md h-1/6 px-4 py-2 bg-slate-100">
         <ul className="flex justify-between">
-          <li className="">Job ID</li>
-          <li>Device ID</li>
-          <li>Status</li>
-          <li>Start Date</li>
-          <li>User ID</li>
+          <li className="w-1/5">Job ID</li>
+          <li className="w-1/5">Device ID</li>
+          <li className="w-1/5">Status</li>
+          <li className="w-1/5">Start Date</li>
+          <li className="w-1/5">User ID</li>
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
@@ -96,13 +99,13 @@ function JobsInfo({ deviceId }: any) {
                 key={index}
                 className="flex justify-between border-b-2 border-slate-100 p-2"
               >
-                <li>{job.job_id}</li>
-                <li>{job.device_id}</li>
-                <li>{job.status}</li>
-                <li>
+                <li className="w-1/5">{job.job_id}</li>
+                <li className="w-1/5">{job.device_id}</li>
+                <li className="w-1/5 pr-6">{job.status}</li>
+                <li className="w-1/5">
                   {new Date(parseInt(job?.start_date)).toLocaleDateString()}
                 </li>
-                <li>{job.user_id}</li>
+                <li className="w-1/5 pl-6">{job.user_id}</li>
               </ul>
             ))
           ) : (

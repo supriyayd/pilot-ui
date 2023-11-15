@@ -51,6 +51,23 @@ function JobLogsInfo({ deviceId }: any) {
     return uniqueJobIds.map((id) => ({ value: id, label: id }));
   }
 
+  function handleJobChange(e: any) {
+    const jobId = e.value;
+    const filteredJobLogs = joblogs.filter((log: any) => log?.job_id === jobId);
+    setJoblogs(filteredJobLogs);
+    if (!enableClear) setEnableClear(true);
+  }
+
+  function handleDateChange(e: any) {
+    const startDate = e.value;
+    const filteredDeviceLogs = joblogs?.filter(
+      (log: any) =>
+        new Date(parseInt(log?.start_date)).toLocaleDateString() === startDate
+    );
+    setJoblogs(filteredDeviceLogs);
+    if (!enableClear) setEnableClear(true);
+  }
+
   function handleStatusChange(e: any) {
     const status = e.value;
     const filteredJobLogs = joblogs.filter(
@@ -60,6 +77,18 @@ function JobLogsInfo({ deviceId }: any) {
     if (!enableClear) setEnableClear(true);
   }
 
+  function getUnique() {
+    const timestamps = joblogs.map((log: any) =>
+      new Date(parseInt(log?.start_date)).toLocaleDateString()
+    );
+
+    const result = Array.from(new Set(timestamps));
+    return result.map((date: any) => ({
+      value: date,
+      label: date,
+    }));
+  }
+
   return (
     <div className="job-logs-container flex-1 border-2 border-sky-500 bg-slate-50 rounded-md h-full w-full ml-2 p-4">
       <div className="device-card-heading flex justify-between">
@@ -67,7 +96,7 @@ function JobLogsInfo({ deviceId }: any) {
         <div className="flex justify-around">
           <Select
             styles={dropDownStyles}
-            className="mr-2"
+            className="mr-2 w-42"
             options={jobStatus.map((status) => ({
               value: status,
               label: status,
@@ -78,20 +107,19 @@ function JobLogsInfo({ deviceId }: any) {
           <Select
             styles={dropDownStyles}
             className="mr-2"
-            options={joblogs.map((job: any) => ({
-              value: job?.start_date,
-              label: job?.end_date,
-            }))}
+            options={getUnique()}
             placeholder="Start Date"
+            onChange={handleDateChange}
           />
           <Select
             styles={dropDownStyles}
             placeholder="Job ID"
+            onChange={handleJobChange}
             options={getJobIds()}
           />
           {enableClear && (
             <button
-              className="ml-2 p-2 bg-red-500 rounded-md text-white"
+              className="ml-1 p-1 bg-red-500 rounded-md text-white h-10"
               onClick={() => {
                 setEnableClear(false);
                 refetch();
@@ -104,11 +132,11 @@ function JobLogsInfo({ deviceId }: any) {
       </div>
       <div className="table-container mt-2 bg-white border-2 border-slate-200 rounded-md h-1/6 px-4 py-2 bg-slate-100">
         <ul className="flex justify-between">
-          <li className="">Log ID</li>
-          <li>Job ID</li>
-          <li>Start Date</li>
-          <li>End Date</li>
-          <li>Incident Type</li>
+          <li className="w-1/5">Log ID</li>
+          <li className="w-1/5">Job ID</li>
+          <li className="w-1/5">Start Date</li>
+          <li className="w-1/5">End Date</li>
+          <li className="w-1/5">Incident Type</li>
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
@@ -119,17 +147,17 @@ function JobLogsInfo({ deviceId }: any) {
                 key={index}
                 className="flex justify-between border-b-2 border-slate-100 p-2"
               >
-                <li>{log?.log_id}</li>
-                <li>{log?.job_id}</li>
-                <li>{`${new Date(
+                <li className="w-1/5">{log?.log_id}</li>
+                <li className="w-1/5">{log?.job_id}</li>
+                <li className="w-1/5">{`${new Date(
                   parseInt(log?.start_date)
                 ).toLocaleDateString()}`}</li>
-                <li>
+                <li className="w-1/5">
                   {log?.end_date
                     ? new Date(parseInt(log?.end_date)).toLocaleDateString()
                     : ""}
                 </li>
-                <li>{log?.incident_type}</li>
+                <li className="w-1/5">{log?.incident_type}</li>
               </ul>
             ))
           ) : (
