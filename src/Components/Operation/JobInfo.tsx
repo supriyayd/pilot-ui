@@ -35,7 +35,7 @@ function JobInfo({ deviceId, setCurrentJobId }: any) {
         if (response.status >= 400) {
           throw new Error("Error fetching data");
         } else {
-          const jobsList = response.data.data.getJobData.filter((job :any) =>job.status=='PRNT');
+          const jobsList = response.data.data.getJobData.filter((job :any) =>job.status=='PRNT' || job.status=='PSD' );
           setJobs(jobsList);
           setCurrentJobId(jobsList[0].job_id);
         }

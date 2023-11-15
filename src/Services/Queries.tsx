@@ -69,7 +69,7 @@ mutation CreateJob($jobData: JSON!) {
 }
 `;
 const updateJobStatus_Query= `
-mutation UpdateJobStatus(actionObject :JSON!){
+mutation UpdateJobStatus($actionObject :JSON!){
   updateJobStatus(actionObject :$actionObject)
     {
       device_id,

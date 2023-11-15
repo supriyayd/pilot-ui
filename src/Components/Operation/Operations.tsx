@@ -19,13 +19,13 @@ function Operations({ networks }: any) {
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [devicesInfo, setDevicesInfo] = useState([]);
   const [deviceData, setDeviceData] = useState(null);
-  const [isDeviceIdleorPaused, setIsDeviceIdleorPaused] = useState(true);
-  const [isDeviceIdle, setIsDeviceIdle]= useState(true);
+  const [isDevicePaused, setIsDevicePaused] = useState(false);
+  const [isDeviceIdle, setIsDeviceIdle]= useState(false);
   const [isDeviceInProcess, setIsDeviceInProcess] = useState(true);
   const [seletedFile, setSeletedFile] = useState('');
-  const [updateStatus, setUpdateStatus] = useState('');
   const [currentJobId, setCurrentJobId]=useState(0);
   const[message, setMessage]=useState('');
+  let updatedStatus:string='';
   useEffect(() => {
     refetch();
   }, [selectedDevice])
@@ -60,20 +60,26 @@ function Operations({ networks }: any) {
     };
 
     const handleStartPrntClick = () => {
-      setUpdateStatus('PRNT');
       mutateCreateJob()
+      setIsDeviceInProcess(true);
+      setIsDevicePaused(false);
     }
 
     const handlePauseClick = () => {
-      setUpdateStatus('PSD');
+      setIsDevicePaused(true)
+      if(updatedStatus==='PSD')
+      { 
+        updatedStatus='PRNT'
+      }
+      else{
+        updatedStatus='PSD'
+      }
       mutateUpdateJob()
     }
 
     const handleCancelClick = () => {
-      setUpdateStatus('ABRT');
-      mutateUpdateJob()
-      setIsDeviceInProcess(true);
-      setIsDeviceIdleorPaused(false);
+      updatedStatus='ABRT'
+      mutateUpdateJob();
     }
 
     const { mutate:mutateCreateJob } = useMutation("createJob", () => {
@@ -100,6 +106,7 @@ function Operations({ networks }: any) {
       }).then((response) => {
         if (response.status >= 400) {
           setMessage("Error starting job.");
+        
         } else {
           setMessage("Job started successfully.");
         }
@@ -107,7 +114,6 @@ function Operations({ networks }: any) {
     });
 
     const { mutate:mutateUpdateJob } = useMutation("updateJobStatus", () => {
-      console.log(updateStatus)
       return axios({
         url: process.env.REACT_APP_API_URL,
         method: "POST",
@@ -121,7 +127,7 @@ function Operations({ networks }: any) {
             actionObject: {
               device_id: selectedDevice,
               job_id:currentJobId,
-              status: 'PSD',
+              status: updatedStatus
 
             },
           }
@@ -148,13 +154,14 @@ function Operations({ networks }: any) {
     setDeviceData(deviceData);
     if(deviceData?.status=="IDLE")
     {
-    setIsDeviceIdle(false);
-    setIsDeviceIdleorPaused(false)
+
+    setIsDeviceInProcess(false)
+    setIsDeviceIdle(true)
     }
     if(deviceData?.status=="InProcess")
     {
-    setIsDeviceIdle(false);
-    setIsDeviceIdleorPaused(false)
+    setIsDeviceInProcess(true)
+    setIsDeviceIdle(false)
     }
     
   };
@@ -186,25 +193,33 @@ function Operations({ networks }: any) {
         </div>
       </div>
       <div className="info-container flex h-20 p-4 rounded-md mt-2">
-
-          {isDeviceIdleorPaused
-            ? <button type="submit" onClick={handleStartPrntClick} className="start px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold">Start</button>
+      {/* <button type="submit" onClick={handleStartPrntClick}  className="start px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold">Start</button>
+      <button onClick={()=>handlePauseClick()} className="ml-8 pause px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">Pause</button>
+      <button  onClick={()=>handleCancelClick()} className="ml-8 cancel px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">Cancel</button>
+       */}
+      
+          {isDeviceInProcess
+            ? <button type="submit"   className="start px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold">Start</button>
             : <button type="submit" onClick={handleStartPrntClick}  className="start px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold">Start</button>
           }
           
 
-          {isDeviceInProcess
-            ? <button  className="ml-8 pause px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold" type="submit">Pause</button>
-            : <button onClick={handlePauseClick} className="ml-8 pause px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">Pause</button>
+          {isDeviceInProcess && isDeviceIdle
+            ? <button onClick={()=>handlePauseClick()} className="ml-8 pause px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">PauseOrResume</button>
+            : <button  className="ml-8 pause px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold" type="submit">PauseOrResume</button>
           }
 
-        {isDeviceInProcess
-            ? <button  className="ml-8 cancel px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold" type="submit">Cancel</button>
-            : <button  onClick={handleCancelClick} className="ml-8 cancel px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">Cancel</button>
+        {isDeviceInProcess && isDeviceIdle
+            ? <button  onClick={()=>handleCancelClick()} className="ml-8 cancel px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">Cancel</button>
+            : <button  className="ml-8 cancel px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold" type="submit">Cancel</button>
           }
-          
+
+         
       </div>
-      <div>{message}</div>
+      <div className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+          <span className="font-medium">{message}</span> 
+      </div>
+
       <div className="info-container flex h-80 p-4 rounded-md mt-2">
         <DeviceInfo deviceInfo={devicesInfo.filter(
             (device: any) => device.device_id === selectedDevice
