@@ -6,7 +6,6 @@ import { GetJobData_QUERY } from "../../Services/Queries";
 import { useEffect, useState } from "react";
 
 function JobsInfo({ deviceId }: any) {
-  console.log(deviceId);
   const [jobs, setJobs] = useState([]);
   const [enableClear, setEnableClear] = useState(false);
   const [defaultFilterValue, setDefaultFilterValue] = useState("");

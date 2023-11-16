@@ -9,19 +9,12 @@ const GetAllNetwork_QUERY = (filterObject: any) => `
 const GetAllDevice_QUERY = (filterObject: any) => `
 {
   getAllDevices(filterObject: ${filterObject}) {
-    device_id
-    material_id
-    network_id
-    name
-    serial_number
-    uuid
     status
     created_at
     temperature
-    manufacturer
     available_material
     humidity
-    printing_time
+    device_info
   }
 }`;
 

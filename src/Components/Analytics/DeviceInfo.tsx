@@ -1,7 +1,8 @@
 function DeviceInfo({ deviceInfo }: any) {
+  const deviceData = deviceInfo ? JSON.parse(deviceInfo?.device_info) : null;
   return (
     <>
-      {deviceInfo ? (
+      {deviceData ? (
         <div className="device-info-container flex-1 border-sky-500 border-2 bg-slate-50 rounded-md h-full w-full p-4">
           <div className="device-card-heading">
             <h1 className="text-sky-600 font-semibold text-2xl mb-2">
@@ -21,11 +22,11 @@ function DeviceInfo({ deviceInfo }: any) {
               <div className="px-2">
                 <p>
                   <strong className="text-cyan-500 p-2">Device ID:</strong>{" "}
-                  {deviceInfo?.device_id}
+                  {deviceData?.device_id}
                 </p>
                 <p className="">
                   <strong className="text-cyan-500 p-2">Device Name:</strong>{" "}
-                  {deviceInfo?.name}
+                  {deviceData?.name}
                 </p>
                 <p className="text-yellow-500">
                   <strong className="text-cyan-500 p-2">Device Status: </strong>

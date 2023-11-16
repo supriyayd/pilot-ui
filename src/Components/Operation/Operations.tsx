@@ -222,7 +222,7 @@ function Operations({ networks }: any) {
 
       <div className="info-container flex h-80 p-4 rounded-md mt-2">
         <DeviceInfo deviceInfo={devicesInfo.filter(
-            (device: any) => device.device_id === selectedDevice
+            (device: any) => device?.device_id === selectedDevice
           )[0]} />
          <JobInfo deviceId={selectedDevice} setCurrentJobId={setCurrentJobId} />
       </div>
