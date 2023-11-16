@@ -3,11 +3,11 @@ import Menubar from "./Menubar";
 import Header from "./Header";
 import "../CSS/dashboard.css";
 import { pageTypes } from "../types";
-import Operations from "./Operations";
 import Analytics from "./Analytics/Analytics";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { GetAllNetwork_QUERY } from "../Services/Queries";
+import Operations from "./Operation/Operations";
 
 const Dashboard: React.FC = () => {
   const [currentComponent, setCurrentComponent] = useState(
@@ -52,7 +52,7 @@ const Dashboard: React.FC = () => {
           <Menubar setCurrentComponent={setCurrentComponent} />
         </div>
         <div className="right-component">
-          {currentComponent === pageTypes.OPERATIONS && <Operations />}
+          {currentComponent === pageTypes.OPERATIONS && <Operations networks={networks}/>}
           {currentComponent === pageTypes.ANALYTICS && (
             <Analytics networks={networks} />
           )}

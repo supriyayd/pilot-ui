@@ -5,6 +5,7 @@ import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+
 const App: React.FC = () => {
   const queryClient = new QueryClient();
 

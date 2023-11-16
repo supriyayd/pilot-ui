@@ -9,19 +9,12 @@ const GetAllNetwork_QUERY = (filterObject: any) => `
 const GetAllDevice_QUERY = (filterObject: any) => `
 {
   getAllDevices(filterObject: ${filterObject}) {
-    device_id
-    material_id
-    network_id
-    name
-    serial_number
-    uuid
     status
     created_at
     temperature
-    manufacturer
     available_material
     humidity
-    printing_time
+    device_info
   }
 }`;
 
@@ -57,25 +50,28 @@ const GetJobLogData_QUERY = (filterObject: any) => `
     }
 }`;
 
-const CreateJob_Query = `{
-    createJob()
+const CreateJob_Query = `
+mutation CreateJob($jobData: JSON!) {
+  createJob(jobData: $jobData) {
+    user_id
+    device_id
+    start_date
+    status
+    filepath
+  }
+}
+`;
+const updateJobStatus_Query= `
+mutation UpdateJobStatus($actionObject :JSON!){
+  updateJobStatus(actionObject :$actionObject)
     {
-        user_id,
-        device_id,
-        start_date,
-        end_date,
-        status,
-        filePath
-    }
-}`;
+      device_id,
+      job_id,
+      status,
+  }
+}
+`;
 
-const updateJobStatus_Query = `{
-    UpdateJobStatus()
-    {
-        job_id,
-        status
-    }
-}`;
 
 const GetDeviceLogs_Query = (filterObject: any) => `
 {
