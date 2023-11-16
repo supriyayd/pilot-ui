@@ -6,7 +6,7 @@ import { GetJobData_QUERY } from "../../Services/Queries";
 import { useEffect, useState } from "react";
 
 
-function JobInfo({ deviceId, setCurrentJobId }: any) {
+function JobInfo({ deviceId, setCurrentJobId, fetchJob, setFetchJob}: any) {
   console.log(deviceId);
   const [jobs, setJobs] = useState([]);
 
