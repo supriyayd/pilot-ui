@@ -178,7 +178,7 @@ function Operations({ networks }: any) {
     setSelectedDevice(value);
 
     const deviceData:any=devicesInfo.filter(
-      (device: any) => device.device_id === value
+      (device: any) => JSON.parse(device.device_info)?.device_id === value
     )[0];
     if(deviceData?.status=="IDLE")
     {
@@ -205,11 +205,11 @@ function Operations({ networks }: any) {
           />
         </div>
         <div className="ml-8">
-          <Select
+        <Select
             styles={dropDownStyles}
             options={devicesInfo.map((device: any) => ({
-              label: device?.name,
-              value: device?.device_id,
+              label: JSON.parse(device?.device_info)?.name,
+              value: JSON.parse(device?.device_info)?.device_id,
             }))}
             onChange={getDeviceDetails}
           />
@@ -249,9 +249,11 @@ function Operations({ networks }: any) {
           <span className="font-medium">{message}</span> 
       </div>}
       <div className="info-container flex h-80 p-4 rounded-md mt-2">
-        <DeviceInfo deviceInfo={devicesInfo.filter(
-            (device: any) => device.device_id === selectedDevice
-          )[0]} />
+      <DeviceInfo
+          deviceInfo={devicesInfo.filter(
+            (device: any) => JSON.parse(device.device_info)?.device_id === selectedDevice
+          )[0]}
+        />
          <JobInfo setFetchJob={setFetchJob} fetchJob={fetchJob} deviceId={selectedDevice} setCurrentJobId={setCurrentJobId} />
       </div>
       <div className="logs-container flex h-80 p-4 rounded-md">
