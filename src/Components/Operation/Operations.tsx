@@ -18,12 +18,14 @@ function Operations({ networks }: any) {
   const [selectedNetwork, setSelectedNetwork] = useState(null);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [devicesInfo, setDevicesInfo] = useState([]);
+
   const [ isAlertVisible, setIsAlertVisible ] = React.useState(false);
   const [isDeviceIdle, setIsDeviceIdle]= useState(true);
   const [isDeviceInProcess, setIsDeviceInProcess] = useState(true);
   const [seletedFile, setSeletedFile] = useState('');
   const [currentJobId, setCurrentJobId]=useState<any>(null);
   const [fetchJob, setFetchJob]=useState(false)
+
   const[message, setMessage]=useState('');
   let updatedStatus:string='';
   useEffect(() => {
@@ -62,6 +64,7 @@ function Operations({ networks }: any) {
     const handleStartPrntClick = () => {
       mutateCreateJob()
       setIsDeviceInProcess(true);
+
     }
 
     const handlePauseClick = () => {
@@ -74,6 +77,7 @@ function Operations({ networks }: any) {
         else{
           updatedStatus='PSD'
         }
+
       }
       else{
         updatedStatus='PSD'
@@ -112,6 +116,7 @@ function Operations({ networks }: any) {
       }).then((response) => {
         if (response.status >= 400) {
           setMessage("Error starting job.");
+
         } else {
           setIsAlertVisible(true);
           setMessage("Job started successfully.");
@@ -121,6 +126,7 @@ function Operations({ networks }: any) {
           setIsDeviceInProcess(true)
           setIsDeviceIdle(false)
           setFetchJob(true);
+
         }
       });
     });
@@ -224,6 +230,7 @@ function Operations({ networks }: any) {
             : <button type="submit" onClick={handleStartPrntClick}  className="start px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold">Start</button>
           }
           
+
 
           {isDeviceInProcess && !isDeviceIdle
             ? <button onClick={()=>handlePauseClick()} className="ml-8 pause px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">PauseOrResume</button>

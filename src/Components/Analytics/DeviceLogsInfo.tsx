@@ -56,10 +56,22 @@ function DeviceLogsInfo({ deviceId }: any) {
   function handleDeviceDateChange(e: any) {
     const occurredAt = e.value;
     const filteredDeviceLogs = devicelogs.filter(
-      (log: any) => log.occurred_at === occurredAt
+      (log: any) => new Date(parseInt(log?.occurred_at)).toLocaleDateString() === occurredAt
     );
     setDevicelogs(filteredDeviceLogs);
     if (!enableClear) setEnableClear(true);
+  }
+
+  function getUnique() {
+    const timestamps = devicelogs.map((log: any) =>
+      new Date(parseInt(log.occurred_at)).toLocaleDateString()
+    );
+
+    const result = Array.from(new Set(timestamps));
+    return result.map((date: any) => ({
+      value: date,
+      label: date,
+    }));
   }
 
   return (
@@ -81,12 +93,7 @@ function DeviceLogsInfo({ deviceId }: any) {
           <Select
             className="ml-2"
             styles={dropDownStyles}
-            options={devicelogs?.map((device: any) => ({
-              value: device.occurred_at,
-              label: new Date(
-                parseInt(device.occurred_at)
-              ).toLocaleDateString(),
-            }))}
+            options={getUnique()}
             placeholder="Occured At"
             onChange={handleDeviceDateChange}
           />
@@ -105,11 +112,11 @@ function DeviceLogsInfo({ deviceId }: any) {
       </div>
       <div className="table-container mt-2 bg-white border-2 border-slate-200 rounded-md h-1/6 px-4 py-2 bg-slate-100">
         <ul className="flex justify-between">
-          <li>Log ID</li>
-          <li>Device ID</li>
-          <li>Occured At</li>
-          <li>Status</li>
-          <li>Change Description</li>
+          <li className="w-1/5">Log ID</li>
+          <li className="w-1/5">Device ID</li>
+          <li className="w-1/5">Occured At</li>
+          <li className="w-1/5">Status</li>
+          <li className="w-1/5">Change Desc</li>
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
@@ -121,19 +128,19 @@ function DeviceLogsInfo({ deviceId }: any) {
                   key={index}
                   className="flex justify-between border-b-2 border-slate-100 p-2"
                 >
-                  <li>{log?.log_id}</li>
-                  <li>{log?.device_id}</li>
-                  <li>
+                  <li className="w-1/5">{log?.log_id}</li>
+                  <li className="w-1/5">{log?.device_id}</li>
+                  <li className="w-1/5">
                     {new Date(parseInt(log?.occurred_at)).toLocaleDateString()}
                   </li>
                   <li
                     className={`text-${
                       statusColor[log?.status]
-                    }-200 font-medium`}
+                    }-200 font-medium w-1/5`}
                   >
                     {log?.status}
                   </li>
-                  <li>{log?.change_description}</li>
+                  <li className="w-1/5">{log?.change_description}</li>
                 </ul>
               ))
             ) : (

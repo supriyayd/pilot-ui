@@ -43,6 +43,7 @@ function Analytics({ networks }: any) {
         throw new Error("Error fetching data");
       } else {
         const devicesList = response.data.data.getAllDevices;
+        console.log(devicesList)
         return setDevicesInfo(devicesList);
       }
     });
@@ -64,8 +65,8 @@ function Analytics({ networks }: any) {
           <Select
             styles={dropDownStyles}
             options={devicesInfo.map((device: any) => ({
-              label: device?.name,
-              value: device?.device_id,
+              label: JSON.parse(device?.device_info)?.name,
+              value: JSON.parse(device?.device_info)?.device_id,
             }))}
             onChange={(e: any) => setSelectedDevice(e.value)}
           />
@@ -74,7 +75,7 @@ function Analytics({ networks }: any) {
       <div className="info-container flex h-80 p-4 rounded-md mt-2">
         <DeviceInfo
           deviceInfo={devicesInfo.filter(
-            (device: any) => device.device_id === selectedDevice
+            (device: any) => JSON.parse(device.device_info)?.device_id === selectedDevice
           )[0]}
         />
         <JobsInfo deviceId={selectedDevice} />
