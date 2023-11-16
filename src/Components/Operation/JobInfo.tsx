@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { GetJobData_QUERY } from "../../Services/Queries";
 import { useEffect, useState } from "react";
 
+
 function JobInfo({ deviceId, setCurrentJobId }: any) {
   console.log(deviceId);
   const [jobs, setJobs] = useState([]);
@@ -12,7 +13,11 @@ function JobInfo({ deviceId, setCurrentJobId }: any) {
   useEffect(() => {
     if(deviceId)
       refetch();
-  }, [deviceId])
+
+    if(fetchJob)
+      refetch();
+
+  }, [deviceId,fetchJob])
 
   const { data, isLoading, error, refetch } = useQuery(
     "getJobData",
@@ -37,7 +42,9 @@ function JobInfo({ deviceId, setCurrentJobId }: any) {
         } else {
           const jobsList = response.data.data.getJobData.filter((job :any) =>job.status=='PRNT' || job.status=='PSD' );
           setJobs(jobsList);
-          setCurrentJobId(jobsList[0].job_id);
+          setCurrentJobId(jobsList[0]);
+          setFetchJob(false);
+
         }
       });
     },
@@ -54,10 +61,9 @@ function JobInfo({ deviceId, setCurrentJobId }: any) {
       <div className="table-container mt-2 bg-white border-2 border-slate-200 rounded-md h-1/6 px-4 py-2 bg-slate-100">
         <ul className="flex justify-between">
           <li className="">Job ID</li>
-          <li>Device ID</li>
           <li>Status</li>
           <li>Start Date</li>
-          <li>User ID</li>
+
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
@@ -68,10 +74,9 @@ function JobInfo({ deviceId, setCurrentJobId }: any) {
               className="flex justify-between border-b-2 border-slate-100 p-2"
             >
               <li>{job.job_id}</li>
-              <li>{job.device_id}</li>
               <li>{job.status}</li>
-              <li>{new Date(parseInt(job.start_date)).toLocaleString()}</li>
-              <li>{job.user_id}</li>
+              <li>{new Date(parseInt(job.start_date)).toLocaleDateString()}</li>
+
             </ul>
           ))
         ) : (
