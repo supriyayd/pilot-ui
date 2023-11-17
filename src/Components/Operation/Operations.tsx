@@ -25,12 +25,14 @@ function Operations({ networks }: any) {
   const [seletedFile, setSeletedFile] = useState('');
   const [currentJobId, setCurrentJobId]=useState<any>(null);
   const [fetchJob, setFetchJob]=useState(false)
+  const [fetchDevice, setFetchDevice]=useState(false)
+  const [buttonName, setbuttonName]=useState('Pause')
 
   const[message, setMessage]=useState('');
   let updatedStatus:string='';
   useEffect(() => {
     refetch();
-  }, [selectedDevice])
+  }, [selectedDevice,fetchDevice])
   
   const { data, isLoading, error, refetch } = useQuery("getDeviceData", () => {
     return axios({
@@ -73,14 +75,17 @@ function Operations({ networks }: any) {
         if(currentJobId.status==='PSD')
         { 
           updatedStatus='PRNT'
+          setbuttonName('Pause')
         }
         else{
           updatedStatus='PSD'
+          setbuttonName('Resume')
         }
 
       }
       else{
         updatedStatus='PSD'
+        setbuttonName('Resume')
       }
 
       mutateUpdateJob()
@@ -126,7 +131,11 @@ function Operations({ networks }: any) {
           setIsDeviceInProcess(true)
           setIsDeviceIdle(false)
           setFetchJob(true);
-
+          setFetchDevice(!fetchDevice);
+          const fileInput:any = document.getElementById('file-input');
+            if (fileInput) {
+              fileInput.value = '';
+            }
         }
       });
     });
@@ -161,10 +170,15 @@ function Operations({ networks }: any) {
             setIsAlertVisible(false);
           }, 3000);
           setFetchJob(true);
+          setFetchDevice(!fetchDevice);
           if(updatedStatus==='ABRT')
           {
             setIsDeviceInProcess(false)
             setIsDeviceIdle(true)
+            const fileInput:any = document.getElementById('file-input');
+            if (fileInput) {
+              fileInput.value = '';
+            }
           }
         }
       });
@@ -215,15 +229,11 @@ function Operations({ networks }: any) {
           />
         </div>
         <div className="ml-8">
-          <input  onChange={onFileUpload} type="file" />
+          <input id="file-input" onChange={onFileUpload} type="file" />
           
         </div>
       </div>
       <div className="info-container flex h-20 p-4 rounded-md mt-2">
-      {/* <button type="submit" onClick={handleStartPrntClick}  className="start px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold">Start</button>
-      <button onClick={()=>handlePauseClick()} className="ml-8 pause px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">Pause</button>
-      <button  onClick={()=>handleCancelClick()} className="ml-8 cancel px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">Cancel</button>
-       */}
       
           {isDeviceInProcess
             ? <button type="submit"   className="start px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold">Start</button>
@@ -233,8 +243,8 @@ function Operations({ networks }: any) {
 
 
           {isDeviceInProcess && !isDeviceIdle
-            ? <button onClick={()=>handlePauseClick()} className="ml-8 pause px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">PauseOrResume</button>
-            : <button  className="ml-8 pause px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold" type="submit">PauseOrResume</button>
+            ? <button onClick={()=>handlePauseClick()} className="ml-8 pause px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold" type="submit">{buttonName}</button>
+            : <button  className="ml-8 pause px-4 py-2 rounded-lg bg-sky-200 text-white font-semibold" type="submit">{buttonName}</button>
           }
 
         {isDeviceInProcess && !isDeviceIdle
@@ -249,7 +259,7 @@ function Operations({ networks }: any) {
           <span className="font-medium">{message}</span> 
       </div>}
       <div className="info-container flex h-80 p-4 rounded-md mt-2">
-      <DeviceInfo
+      <DeviceInfo 
           deviceInfo={devicesInfo.filter(
             (device: any) => JSON.parse(device.device_info)?.device_id === selectedDevice
           )[0]}
