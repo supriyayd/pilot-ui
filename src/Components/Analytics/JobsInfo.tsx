@@ -5,13 +5,13 @@ import { useQuery } from "react-query";
 import { GetJobData_QUERY } from "../../Services/Queries";
 import { useEffect, useState } from "react";
 
-function JobsInfo({ deviceId }: any) {
+function JobsInfo({ deviceId, startDate, endDate }: any) {
   const [jobs, setJobs] = useState([]);
   const [enableClear, setEnableClear] = useState(false);
   const [defaultFilterValue, setDefaultFilterValue] = useState("");
   useEffect(() => {
     if (deviceId) refetch();
-  }, [deviceId]);
+  }, [deviceId, startDate, endDate]);
 
   const { data, isLoading, error, refetch } = useQuery(
     "getJobData",
@@ -27,6 +27,8 @@ function JobsInfo({ deviceId }: any) {
           query: GetJobData_QUERY({
             filterObject: {
               device_id: deviceId,
+              start_date: startDate,
+              end_date: endDate
             },
           }),
         },
@@ -87,26 +89,26 @@ function JobsInfo({ deviceId }: any) {
           <li className="w-1/5">Device ID</li>
           <li className="w-1/5">Status</li>
           <li className="w-1/5">Start Date</li>
-          <li className="w-1/5">User ID</li>
         </ul>
       </div>
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
         {deviceId ? (
           jobs.length ? (
-            jobs.map((job: any, index: number) => (
-              <ul
-                key={index}
-                className="flex justify-between border-b-2 border-slate-100 p-2"
-              >
-                <li className="w-1/5">{job.job_id}</li>
-                <li className="w-1/5">{job.device_id}</li>
-                <li className="w-1/5 pr-6">{job.status}</li>
-                <li className="w-1/5">
-                  {new Date(parseInt(job?.start_date)).toLocaleDateString()}
-                </li>
-                <li className="w-1/5 pl-6">{job.user_id}</li>
-              </ul>
-            ))
+            jobs
+              .sort((job1: any, job2: any) => job2.job_id - job1.job_id)
+              .map((job: any, index: number) => (
+                <ul
+                  key={index}
+                  className="flex justify-between border-b-2 border-slate-100 p-2"
+                >
+                  <li className="w-1/5">{job.job_id}</li>
+                  <li className="w-1/5">{job.device_id}</li>
+                  <li className="w-1/5 pr-6">{job.status}</li>
+                  <li className="w-1/5">
+                    {new Date(parseInt(job?.start_date)).toLocaleDateString()}
+                  </li>
+                </ul>
+              ))
           ) : (
             <div className="loader flex justify-center items-center mt-12 ml-64"></div>
           )

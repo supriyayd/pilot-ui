@@ -6,7 +6,7 @@ import axios from "axios";
 import { GetDeviceLogs_Query } from "../../Services/Queries";
 import { useEffect, useState } from "react";
 
-function DeviceLogsInfo({ deviceId }: any) {
+function DeviceLogsInfo({ deviceId, startDate, endDate }: any) {
   const [devicelogs, setDevicelogs] = useState([]);
   const [enableClear, setEnableClear] = useState(false);
 
@@ -14,6 +14,23 @@ function DeviceLogsInfo({ deviceId }: any) {
     if (deviceId) refetch();
   }, [deviceId]);
 
+  const updateFilter = () => {
+    if (startDate && endDate) {
+      console.log(devicelogs);
+      const updatedLogs = devicelogs.filter((log: any) =>
+        console.log(
+          parseInt(log.occurred_at) <= Date.parse(startDate) / 1000,
+            parseInt(log.occurred_at) <= Date.parse(endDate) / 1000
+        )
+      );
+      console.log(updatedLogs);
+      setDevicelogs([...updatedLogs]);
+    }
+  };
+
+  useEffect(() => {
+    updateFilter();
+  }, [endDate]);
   const { data, isLoading, error, refetch } = useQuery(
     "getDevicelogsData",
     () => {
@@ -28,6 +45,8 @@ function DeviceLogsInfo({ deviceId }: any) {
           query: GetDeviceLogs_Query({
             filterObject: {
               device_id: deviceId,
+              start_date: startDate,
+              end_date: endDate,
             },
           }),
         },
@@ -56,7 +75,8 @@ function DeviceLogsInfo({ deviceId }: any) {
   function handleDeviceDateChange(e: any) {
     const occurredAt = e.value;
     const filteredDeviceLogs = devicelogs.filter(
-      (log: any) => new Date(parseInt(log?.occurred_at)).toLocaleDateString() === occurredAt
+      (log: any) =>
+        new Date(parseInt(log?.occurred_at)).toLocaleDateString() === occurredAt
     );
     setDevicelogs(filteredDeviceLogs);
     if (!enableClear) setEnableClear(true);
@@ -90,13 +110,15 @@ function DeviceLogsInfo({ deviceId }: any) {
             placeholder="Status"
             onChange={handleDeviceStatusFilter}
           />
-          <Select
-            className="ml-2"
-            styles={dropDownStyles}
-            options={getUnique()}
-            placeholder="Occured At"
-            onChange={handleDeviceDateChange}
-          />
+          {!startDate && (
+            <Select
+              className="ml-2"
+              styles={dropDownStyles}
+              options={getUnique()}
+              placeholder="Occured At"
+              onChange={handleDeviceDateChange}
+            />
+          )}
           {enableClear && (
             <button
               className="ml-2 p-2 bg-red-500 rounded-md text-white"
@@ -112,7 +134,6 @@ function DeviceLogsInfo({ deviceId }: any) {
       </div>
       <div className="table-container mt-2 bg-white border-2 border-slate-200 rounded-md h-1/6 px-4 py-2 bg-slate-100">
         <ul className="flex justify-between">
-          <li className="w-1/5">Log ID</li>
           <li className="w-1/5">Device ID</li>
           <li className="w-1/5">Occured At</li>
           <li className="w-1/5">Status</li>
@@ -128,7 +149,6 @@ function DeviceLogsInfo({ deviceId }: any) {
                   key={index}
                   className="flex justify-between border-b-2 border-slate-100 p-2"
                 >
-                  <li className="w-1/5">{log?.log_id}</li>
                   <li className="w-1/5">{log?.device_id}</li>
                   <li className="w-1/5">
                     {new Date(parseInt(log?.occurred_at)).toLocaleDateString()}
@@ -144,7 +164,17 @@ function DeviceLogsInfo({ deviceId }: any) {
                 </ul>
               ))
             ) : (
-              <div className="loader flex justify-center items-center mt-12 ml-64"></div>
+              <>
+                {startDate ? (
+                  <div className="flex justify-center items-center">
+                    "No Data found!"
+                  </div>
+                ) : (
+                  <div className="loader flex justify-center items-center mt-12 ml-64">
+                    N
+                  </div>
+                )}
+              </>
             )
           ) : (
             <div className="flex justify-center items-center mt-16 font-semibold">

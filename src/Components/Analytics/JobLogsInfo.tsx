@@ -132,7 +132,6 @@ function JobLogsInfo({ deviceId }: any) {
       </div>
       <div className="table-container mt-2 bg-white border-2 border-slate-200 rounded-md h-1/6 px-4 py-2 bg-slate-100">
         <ul className="flex justify-between">
-          <li className="w-1/5">Log ID</li>
           <li className="w-1/5">Job ID</li>
           <li className="w-1/5">Start Date</li>
           <li className="w-1/5">End Date</li>
@@ -142,24 +141,25 @@ function JobLogsInfo({ deviceId }: any) {
       <div className="table-info mt-2 bg-white border-2 border-slate-200 rounded-md h-40 px-4 py-2 bg-white scroll-smooth overflow-auto no-scrollbar">
         {deviceId ? (
           joblogs.length ? (
-            joblogs.map((log: any, index: number) => (
-              <ul
-                key={index}
-                className="flex justify-between border-b-2 border-slate-100 p-2"
-              >
-                <li className="w-1/5">{log?.log_id}</li>
-                <li className="w-1/5">{log?.job_id}</li>
-                <li className="w-1/5">{`${new Date(
-                  parseInt(log?.start_date)
-                ).toLocaleDateString()}`}</li>
-                <li className="w-1/5">
-                  {log?.end_date
-                    ? new Date(parseInt(log?.end_date)).toLocaleDateString()
-                    : ""}
-                </li>
-                <li className="w-1/5">{log?.incident_type}</li>
-              </ul>
-            ))
+            joblogs
+              .sort((job1: any, job2: any) => job2.log_id - job1.log_id)
+              .map((log: any, index: number) => (
+                <ul
+                  key={index}
+                  className="flex justify-between border-b-2 border-slate-100 p-2"
+                >
+                  <li className="w-1/5">{log?.job_id}</li>
+                  <li className="w-1/5">{`${new Date(
+                    parseInt(log?.start_date)
+                  ).toLocaleDateString()}`}</li>
+                  <li className="w-1/5">
+                    {log?.end_date
+                      ? new Date(parseInt(log?.end_date)).toLocaleDateString()
+                      : ""}
+                  </li>
+                  <li className="w-1/5">{log?.incident_type}</li>
+                </ul>
+              ))
           ) : (
             <div className="loader flex justify-center items-center mt-12 ml-64"></div>
           )

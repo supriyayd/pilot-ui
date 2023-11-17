@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 
 
 function JobInfo({ deviceId, setCurrentJobId, fetchJob, setFetchJob}: any) {
-  console.log(deviceId);
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {

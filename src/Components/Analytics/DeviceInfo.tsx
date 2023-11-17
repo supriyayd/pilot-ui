@@ -20,10 +20,6 @@ function DeviceInfo({ deviceInfo }: any) {
                 />
               </div>
               <div className="px-2">
-                <p>
-                  <strong className="text-cyan-500 p-2">Device ID:</strong>{" "}
-                  {deviceData?.device_id}
-                </p>
                 <p className="">
                   <strong className="text-cyan-500 p-2">Device Name:</strong>{" "}
                   {deviceData?.name}
@@ -48,7 +44,7 @@ function DeviceInfo({ deviceInfo }: any) {
                   <strong className="text-cyan-500 p-2">
                     Device Description:{" "}
                   </strong>
-                  {"lorem ipsum dolor sit amet lorem ."}
+                  {deviceData.description}
                 </p>
               </div>
             </div>
